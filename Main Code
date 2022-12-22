@@ -13,6 +13,7 @@ def remove_null(df):
         df.dropna(thresh = 19, axis = 1, inplace = True)
     print(df)
         
+# renaming columns
 
 def rename(df):
     df = df.rename(columns = {'Unnamed: 0':'Gender','Unnamed: 1': 'DOB', 'Unnamed: 2': 'Year', 
@@ -27,11 +28,15 @@ def rename(df):
     "Expressive Arts and Design":"EMM_band", "Unnamed: 35":"EMM_ref","Unnamed: 36":"BI_band","Unnamed: 37":"BI_ref"})
     return(df)
     
+# removing data of birth
 
 def anon(df):
     new_DOB = df['DOB'].str[3:]     
     df["formatted_DOB"] = new_DOB
     df.pop("DOB")
+
+
+# creating dfs from downloaded csv files
 
 def create_dfs(dir_path):
     directories = os.listdir(dir_path)
@@ -45,7 +50,9 @@ def create_dfs(dir_path):
         remove_null(name)
         name = name.drop([0,1])
         df_list.append(name)
- 
+
+# obtaining user input and selecting data before exporting back to csv
+
 def chop_and_export(dfs):
     list_of_columns_in_dfs = []
     for df in dfs:
@@ -58,6 +65,8 @@ def chop_and_export(dfs):
     df_name = input("Enter the name of your data frame ")
     selecting(dfs, c1, c2, c3, df_name)
 
+# combining selected data 
+
 def selecting(dfs, column1, column2, column3, df_name):
     dfs_sliced = []
     for df in dfs:
@@ -65,6 +74,8 @@ def selecting(dfs, column1, column2, column3, df_name):
         dfs_sliced.append(df)
     combine_df = pd.concat(dfs_sliced)
     combine_df.to_csv(r'C:\Users\{current_user}\desktop\{name}.csv'.format(current_user = os.getlogin(), name = df_name), index=False)  
+
+#starting program
 
 def start():
     path = input("please enter the name of the directory your files are kept")
